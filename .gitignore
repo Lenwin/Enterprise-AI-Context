@@ -1,0 +1,19 @@
+# Conda
+.env
+.venv
+venv/
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+
+# ML
+mlruns/
+checkpoints/
+
+# Environment variables
+.env.local

@@ -26,6 +26,4 @@ dependencies:
   - matplotlib
   - numpy
   - datasets
-variables:
-  GEMINI_API_KEY: AIzaSyDNg6x04pkShjkC33zboFK80_ygyTUaRJs
 prefix: /home/lenwin/anaconda3

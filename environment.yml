@@ -1,10 +1,31 @@
-name: enterprise-ai-context
+name: base
 channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
 dependencies:
-  - python=3.11
-  - ipykernel
-  - pydantic
-prefix: /home/lenwin/anaconda3/envs/enterprise-ai-context
+  - _anaconda_depends
+  - python=3.12
+  - setuptools
+  - pip
+  - wheel
+  - anaconda-anon-usage
+  - anaconda-catalogs
+  - anaconda-client
+  - anaconda-project
+  - anaconda-navigator=2.6.5
+  - conda[version='>=23.7']
+  - conda-build
+  - conda-content-trust
+  - conda-libmamba-solver
+  - conda-pack
+  - conda-package-handling
+  - conda-package-streaming
+  - conda-token
+  - anaconda-toolbox
+  - matplotlib
+  - numpy
+  - datasets
+variables:
+  GEMINI_API_KEY: AIzaSyDNg6x04pkShjkC33zboFK80_ygyTUaRJs
+prefix: /home/lenwin/anaconda3

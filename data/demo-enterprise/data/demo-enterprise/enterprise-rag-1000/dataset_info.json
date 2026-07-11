@@ -1,0 +1,48 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "documents",
+  "dataset_name": "enterprise_rag-bench",
+  "dataset_size": 2523566169,
+  "description": "",
+  "download_size": 1409893131,
+  "features": {
+    "doc_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "source_type": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "title": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "content": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 3933459300,
+  "splits": {
+    "test": {
+      "name": "test",
+      "num_bytes": 2523566169,
+      "num_examples": 511962,
+      "shard_lengths": [
+        417857,
+        94105
+      ],
+      "dataset_name": "enterprise_rag-bench"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

@@ -1,9 +1,11 @@
 from src.ingestion.loader import EnterpriseDatasetLoader
 from src.ingestion.converter import EnterpriseDocumentConverter
 
-loader = EnterpriseDatasetLoader()
+from pathlib import Path
 
-dataset = loader.load_from_disk("/home/lenwin/ANACONDACODES/RAG/Enterprise-AI-Context/data/demo-enterprise/data/demo-enterprise/enterprise-rag-1000")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+loader = EnterpriseDatasetLoader()
+dataset = loader.load_from_disk(PROJECT_ROOT /"data"/"demo-enterprise"/"data"/"demo-enterprise"/"enterprise-rag-1000")
 
 raw_record = dataset[0]
 

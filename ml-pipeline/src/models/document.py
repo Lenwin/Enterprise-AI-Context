@@ -16,7 +16,7 @@ class EnterpriseDocument(BaseModel):
     
     tags:list[str] = Field(default_factory=list)
 
-    metadata:dict[str,Any] = Field(default_factory=list)
+    metadata:dict[str,Any] = Field(default_factory=dict)
 
     ingested_at:datetime = Field(default_factory=datetime.utcnow)
 
@@ -26,12 +26,3 @@ class EnterpriseDocument(BaseModel):
     @property
     def character_count(self)->int:
         return len(self.content)
-    
-doc = EnterpriseDocument(
-    id="123",
-    title="Leave Policy",
-    content="Employees receive 20 annual leave days.",
-    source="SharePoint"
-)
-
-print(doc.model_dump())

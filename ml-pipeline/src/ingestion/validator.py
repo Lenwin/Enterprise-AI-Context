@@ -1,4 +1,3 @@
-from pydantic import ValidationError
 from src.models.document import EnterpriseDocument
 
 class EnterpriseDocumentValidator:

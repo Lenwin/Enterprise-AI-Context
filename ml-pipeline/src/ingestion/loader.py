@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any
 
-from datasets import Dataset,load_dataset,load_from_disk
+from datasets import Dataset, load_dataset, load_from_disk
 
 class EnterpriseDatasetLoader:
     def __init__(self):

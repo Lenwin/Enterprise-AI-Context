@@ -1,4 +1,7 @@
 from fastapi import APIRouter
+import logging
+
+logger = logging.getLogger(__name__)
 
 from app.core.config import settings
 
@@ -11,4 +14,11 @@ async def health_check():
         "status": "healthy",
         "service": settings.APP_NAME,
         "version": settings.APP_VERSION,
+    }
+@router.get("/")
+async def health_check():
+    logger.info("Health endpoint accessed.")
+
+    return {
+        ...
     }

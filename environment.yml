@@ -1,29 +1,25 @@
-name: base
+name: enterprise-ai-context
+
 channels:
+  - conda-forge
   - defaults
-  - https://repo.anaconda.com/pkgs/main
-  - https://repo.anaconda.com/pkgs/r
+
 dependencies:
-  - _anaconda_depends
-  - python=3.12
-  - setuptools
+  # Python
+  - python=3.11
+
+  # Package manager
   - pip
-  - wheel
-  - anaconda-anon-usage
-  - anaconda-catalogs
-  - anaconda-client
-  - anaconda-project
-  - anaconda-navigator=2.6.5
-  - conda[version='>=23.7']
-  - conda-build
-  - conda-content-trust
-  - conda-libmamba-solver
-  - conda-pack
-  - conda-package-handling
-  - conda-package-streaming
-  - conda-token
-  - anaconda-toolbox
-  - matplotlib
+
+  # Core libraries
   - numpy
+  - pandas
+  - pydantic
   - datasets
-prefix: /home/lenwin/anaconda3
+  
+  # Pip packages
+  - pip:
+      - langchain
+      - langchain-core
+      - langchain-community
+      - langchain-text-splitters

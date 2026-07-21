@@ -5,11 +5,13 @@ from src.ingestion.converter import EnterpriseDocumentConverter
 from src.ingestion.loader import EnterpriseDatasetLoader
 from src.ingestion.validator import EnterpriseDocumentValidator
 from src.models.document import EnterpriseDocument
-
+from src.chunking.chunker import RecursiveDocumentChunker
+from src.models.chunk import DocumentChunk
 class EnterpriseIngestionPipeline:
     def __init__(self):
         self.loader = EnterpriseDatasetLoader()
-    def run(self,dataset_path:str|Path,)->tuple[list[EnterpriseDocument],list[tuple[str,list[str]]]]:
+        self.chunker = RecursiveDocumentChunker()
+    def run(self,dataset_path:str|Path,)->tuple[list[DocumentChunk],list[tuple[str,list[str]]]]:
         dataset = self.loader.load_from_disk(dataset_path)
         documents = EnterpriseDocumentConverter.convert_dataset(dataset)
 
@@ -26,4 +28,6 @@ class EnterpriseIngestionPipeline:
             cleaned_document = EnterpriseDocumentCleaner.clean(document)
             valid_documents.append(cleaned_document)
 
-        return valid_documents,validation_errors
+        chunks = self.chunker.chunk_documents(valid_documents)
+
+        return chunks,validation_errors

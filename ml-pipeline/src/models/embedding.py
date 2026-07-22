@@ -13,6 +13,7 @@ class EmbeddingRecord(BaseModel):
     # created_at:datetime = Field(default_factory=datetime.utcnow)
     chunk_id:str
     document_id:str
+    chunk_index: int
     content:str
     source:str
     embedding:list[float]

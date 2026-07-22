@@ -5,6 +5,7 @@ from src.models.embedding import EmbeddingRecord
 import uuid
 from qdrant_client.models import Filter
 from src.models.search_result import SearchResult
+from qdrant_client.models import Filter,FieldCondition,MatchValue,FilterSelector
 
 class EnterpriseQdrantStore:
 
@@ -66,6 +67,7 @@ class EnterpriseQdrantStore:
             points.append(PointStruct(id=point_id,vector = record.embedding,
                                       payload={"chunk_id": record.chunk_id,
                                                 "document_id": record.document_id,
+                                                "chunk_index": record.chunk_index,
                                                 "content": record.content,
                                                 "source": record.source,
                                                 **record.metadata
@@ -80,10 +82,28 @@ class EnterpriseQdrantStore:
 
         print(result)
 
-    def search(self,query_embedding:list[float],limit: int = 5)->list[SearchResult]:
+    def search(self,query_embedding:list[float],limit: int = 5,filters:dict[str,str]|None=None)->list[SearchResult]:
+        
+        query_filter = None
+
+        if filters:
+            conditions = []
+            
+            for key,value in filters.items():
+                
+                conditions.append(
+                    FieldCondition(
+                        key=key,
+                        match=MatchValue(value=value)
+                    )
+                )
+            query_filter = Filter(
+                must = conditions
+            )
         results = self.client.query_points(
             collection_name = self.collection_name,
             query = query_embedding,
+            query_filter=query_filter,
             limit = limit,
         ).points
         search_results:list[SearchResult] = []
@@ -98,6 +118,7 @@ class EnterpriseQdrantStore:
                 if key not in{
                     "chunk_id",
                     "document_id",
+                    "chunk_index",
                     "content",
                     "source",
                 }
@@ -106,6 +127,7 @@ class EnterpriseQdrantStore:
                 SearchResult(
                     chunk_id=payload["chunk_id"],
                     document_id = payload["document_id"],
+                    chunk_index = payload["chunk_index"],
                     score = point.score,
                     content=payload["content"],
                     source = payload["source"],
@@ -113,3 +135,19 @@ class EnterpriseQdrantStore:
                 )
             )
             return search_results
+    
+    def delete_document(self,document_id)->None:
+        self.client.delete(
+            collection_name = self.collection_name,
+            points_selector = FilterSelector(
+                filter = Filter(
+                    must=[FieldCondition(
+                        key = "document_id",
+                        match = MatchValue(value=document_id)
+                    )
+                    ]
+                )
+            )
+        )
+
+    #METADATA FILTERING

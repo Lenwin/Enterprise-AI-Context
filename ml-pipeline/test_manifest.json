@@ -1,0 +1,12 @@
+{
+    "doc_001": {
+        "document_id": "doc_001",
+        "document_hash": "3289089e317c7d744f23e842733e86e00bbc59d8db07578a2e8851b546f6d102",
+        "indexed_at": "2026-07-22T05:50:52.999769"
+    },
+    "doc_002": {
+        "document_id": "doc_002",
+        "document_hash": "xyz789",
+        "indexed_at": "2026-07-22T05:37:05.149442"
+    }
+}

@@ -13,6 +13,7 @@ class EnterpriseEmbedder:
         return EmbeddingRecord(
             chunk_id=chunk.chunk_id,
             document_id=chunk.document_id,
+            chunk_index = chunk.chunk_index,
             content=chunk.content,
             source=chunk.source,
             embedding=embedding.tolist(),

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.models.base_model import BaseModel
@@ -7,8 +7,29 @@ from app.db.models.base_model import BaseModel
 class Document(BaseModel):
     __tablename__ = "documents"
 
-    filename: Mapped[str] = mapped_column(
+    original_filename: Mapped[str] = mapped_column(
         String(255),
+        nullable=False,
+    )
+
+    stored_filename: Mapped[str] = mapped_column(
+        String(255),
+        unique=True,
+        nullable=False,
+    )
+
+    file_path: Mapped[str] = mapped_column(
+        String(500),
+        nullable=False,
+    )
+
+    file_size: Mapped[int] = mapped_column(
+        BigInteger,
+        nullable=False,
+    )
+
+    mime_type: Mapped[str] = mapped_column(
+        String(100),
         nullable=False,
     )
 

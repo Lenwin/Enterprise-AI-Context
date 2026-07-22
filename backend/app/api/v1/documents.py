@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db
-from app.schemas.document import DocumentCreate, DocumentResponse
+from app.schemas.document import DocumentResponse
 from app.services.document_service import DocumentService
 
-router = APIRouter(prefix="/documents", tags=["Documents"])
+router = APIRouter(
+    prefix="/documents",
+    tags=["Documents"],
+)
 
 
 @router.post(
@@ -13,12 +16,14 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
     response_model=DocumentResponse,
 )
 def upload_document(
-    document: DocumentCreate,
+    file: UploadFile = File(...),
+    uploaded_by: int = Form(...),
     db: Session = Depends(get_db),
 ):
     return DocumentService.create_document(
         db=db,
-        document_data=document,
+        file=file,
+        uploaded_by=uploaded_by,
     )
 
 
@@ -42,8 +47,8 @@ def get_document(
 ):
 
     document = DocumentService.get_document(
-        db,
-        document_id,
+        db=db,
+        document_id=document_id,
     )
 
     if document is None:
@@ -62,8 +67,8 @@ def delete_document(
 ):
 
     document = DocumentService.delete_document(
-        db,
-        document_id,
+        db=db,
+        document_id=document_id,
     )
 
     if document is None:
@@ -73,5 +78,5 @@ def delete_document(
         )
 
     return {
-        "message": "Document deleted successfully."
+        "message": "Document deactivated successfully."
     }

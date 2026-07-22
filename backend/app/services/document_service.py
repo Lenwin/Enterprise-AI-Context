@@ -1,9 +1,10 @@
+from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
 from app.clients.ml_client import MLClient
+from app.core.file_utils import save_uploaded_file
 from app.db.models.document import Document
 from app.repositories.document_repository import DocumentRepository
-from app.schemas.document import DocumentCreate
 
 
 class DocumentService:
@@ -11,15 +12,22 @@ class DocumentService:
     @staticmethod
     def create_document(
         db: Session,
-        document_data: DocumentCreate,
+        file: UploadFile,
+        uploaded_by: int,
     ) -> Document:
 
+        stored_filename, file_path = save_uploaded_file(file)
+
         document = Document(
-            filename=document_data.filename,
-            source=document_data.source.value,
+            original_filename=file.filename,
+            stored_filename=stored_filename,
+            file_path=file_path,
+            file_size=file.size if file.size else 0,
+            mime_type=file.content_type or "application/octet-stream",
+            source=file.filename.split(".")[-1].lower(),
             status="uploaded",
             version=1,
-            uploaded_by=document_data.uploaded_by,
+            uploaded_by=uploaded_by,
             is_active=True,
         )
 
@@ -28,7 +36,9 @@ class DocumentService:
             document=document,
         )
 
-        MLClient.ingest_document(document.id)
+        MLClient.ingest_document(
+            document_id=document.id,
+        )
 
         return document
 

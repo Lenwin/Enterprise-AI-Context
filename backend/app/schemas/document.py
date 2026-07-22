@@ -2,18 +2,14 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
-from app.core.enums import DocumentSource
-
-
-class DocumentCreate(BaseModel):
-    filename: str
-    source: DocumentSource
-    uploaded_by: int
-
 
 class DocumentResponse(BaseModel):
     id: int
-    filename: str
+    original_filename: str
+    stored_filename: str
+    file_path: str
+    file_size: int
+    mime_type: str
     source: str
     status: str
     version: int

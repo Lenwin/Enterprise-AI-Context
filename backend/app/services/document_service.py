@@ -45,8 +45,21 @@ class DocumentService:
     @staticmethod
     def get_all_documents(
         db: Session,
+        search: str | None = None,
+        source: str | None = None,
+        page: int = 1,
+        limit: int = 10,
+        sort: str = "desc",
     ):
-        return DocumentRepository.get_all(db)
+
+        return DocumentRepository.get_all(
+            db=db,
+            search=search,
+            source=source,
+            page=page,
+            limit=limit,
+            sort=sort,
+        )
 
     @staticmethod
     def get_document(
@@ -74,4 +87,14 @@ class DocumentService:
         return DocumentRepository.soft_delete(
             db=db,
             document=document,
+        )
+    @staticmethod
+    def get_document_file(
+        db: Session,
+        document_id: int,
+    ):
+
+        return DocumentRepository.get_by_id(
+            db=db,
+            document_id=document_id,
         )

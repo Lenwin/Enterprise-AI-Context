@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db
@@ -32,10 +33,21 @@ def upload_document(
     response_model=list[DocumentResponse],
 )
 def get_documents(
+    search: str | None = None,
+    source: str | None = None,
+    page: int = 1,
+    limit: int = 10,
+    sort: str = "desc",
     db: Session = Depends(get_db),
 ):
-    return DocumentService.get_all_documents(db)
-
+    return DocumentService.get_all_documents(
+        db=db,
+        search=search,
+        source=source,
+        page=page,
+        limit=limit,
+        sort=sort,
+    )
 
 @router.get(
     "/{document_id}",
@@ -58,6 +70,29 @@ def get_document(
         )
 
     return document
+
+
+@router.get("/{document_id}/download")
+def download_document(
+    document_id: int,
+    db: Session = Depends(get_db),
+):
+    document = DocumentService.get_document_file(
+        db=db,
+        document_id=document_id,
+    )
+
+    if document is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found",
+        )
+
+    return FileResponse(
+        path=document.file_path,
+        filename=document.original_filename,
+        media_type=document.mime_type,
+    )
 
 
 @router.delete("/{document_id}")
